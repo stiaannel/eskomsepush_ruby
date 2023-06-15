@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    eskomsepush (0.1.0)
+    eskomsepush_ruby (0.1.2)
 
 GEM
   remote: https://rubygems.org/
@@ -50,7 +50,7 @@ PLATFORMS
   arm64-darwin-22
 
 DEPENDENCIES
-  eskomsepush!
+  eskomsepush_ruby!
   rake (~> 13.0)
   rspec (~> 3.0)
   rubocop (~> 1.21)
