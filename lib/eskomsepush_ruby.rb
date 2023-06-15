@@ -2,6 +2,14 @@
 
 require_relative "eskomsepush/version"
 
+# EskomSePush API Wrapper Rubygem
+#
+# This is a Rubygem that wraps the EskomSePush API. It allows you to easily integrate the EskomSePush API into your Ruby applications.
+#
+# == Usage:
+#   require 'eskomsepush_ruby'
+#   esp = EskomSePush::API.new("{{token}}")
+#   esp.get_quota
 module EskomSePush
   # Includes
   require 'net/http'
@@ -13,6 +21,16 @@ module EskomSePush
   # Error classes  
   require_relative "eskomsepush/eskomsepusherror"
 
+  # Returns a new instance of API
+  #
+  # == Parameters:
+  # token::
+  #   Your API token
+  # options::
+  #   A hash of options
+  #
+  # == Returns:
+  # A new instance of API
   class API
     def initialize(token, options = {})
       raise InvalidTokenError, "Invalid token" if token.nil?
@@ -21,6 +39,14 @@ module EskomSePush
       @quota = {}
     end
 
+    # Method to get your remaining API Quota/Allowance
+    #
+    # == Parameters:
+    # None
+    #
+    # == Returns:
+    # Response object from handle_response
+    #
     def get_quota
       url = URI("https://developer.sepush.co.za/business/2.0/api_allowance")
       
@@ -34,6 +60,15 @@ module EskomSePush
       handle_response(response)
     end
 
+    # Method to handle the responses from the API
+    #
+    # == Parameters:
+    # response::
+    #   The response object from the API
+    #
+    # == Returns:
+    # Parsed response object. Will raise errors if the API returns an unsucessful response.
+    #
     def handle_response(response)
       return UnexpectedError, "Something went wrong while parsing your response data" if response.nil?
       return UnexpectedError, "Something went wrong while parsing your response data" if response.body.nil?
