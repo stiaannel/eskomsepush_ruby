@@ -6,8 +6,8 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Run the default task
+          name: Run Rspec
           command: |
             gem install bundler -v 2.3.26
             bundle install
-            bundle exec rake
+            bundle exec rspec
