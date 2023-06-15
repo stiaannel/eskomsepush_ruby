@@ -2,7 +2,7 @@
 
 require_relative "eskomsepush/version"
 
-module Eskomsepush
+module EskomSePush
   class Error < StandardError; end
   # Your code goes here...
   class Setup

@@ -4,7 +4,7 @@ require_relative "lib/eskomsepush/version"
 
 Gem::Specification.new do |spec|
   spec.name = "eskomsepush"
-  spec.version = Eskomsepush::VERSION
+  spec.version = EskomSePush::VERSION
   spec.authors = ["stiaannel"]
   spec.email = ["christiaannel9@gmail.com"]
 
