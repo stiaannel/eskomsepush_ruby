@@ -5,7 +5,7 @@ RSpec.describe EskomSePush do
     expect(EskomSePush::VERSION).not_to be nil
   end
 
-  it "Initializing it without a token should raise an error" do
+  it "initializing it without a token should raise an error" do
     expect { EskomSePush::API.new(nil) }.to raise_error(EskomSePush::InvalidTokenError)
   end
 end
