@@ -4,7 +4,8 @@ require_relative "eskomsepush/version"
 
 # EskomSePush API Wrapper Rubygem
 #
-# This is a Rubygem that wraps the EskomSePush API. It allows you to easily integrate the EskomSePush API into your Ruby applications.
+# This is a Rubygem that wraps the EskomSePush API. It allows you to easily integrate the
+# EskomSePush API into your Ruby applications.
 #
 # == Usage:
 #   require 'eskomsepush_ruby'
@@ -12,14 +13,14 @@ require_relative "eskomsepush/version"
 #   esp.get_quota
 module EskomSePush
   # Includes
-  require 'net/http'
-  require 'uri'
-  require 'date'
-  require 'time'
-  require 'json'
+  require "net/http"
+  require "uri"
+  require "date"
+  require "time"
+  require "json"
 
-  # Error classes  
-  require_relative "eskomsepush/eskomsepusherror"
+  # Error classes
+  require_relative "eskomsepush/exception"
 
   # Returns a new instance of API
   #
@@ -34,6 +35,7 @@ module EskomSePush
   class API
     def initialize(token, options = {})
       raise InvalidTokenError, "Invalid token" if token.nil?
+
       @token = token
       @options = options
       @quota = {}
@@ -49,14 +51,10 @@ module EskomSePush
     #
     def get_quota
       url = URI("https://developer.sepush.co.za/business/2.0/api_allowance")
-      
-      https = Net::HTTP.new(url.host, url.port)
-      https.use_ssl = true
-      
       request = Net::HTTP::Post.new(url)
       request["token"] = @token
-      
-      response = https.request(request)
+
+      response = Net::HTTP.get(url)
       handle_response(response)
     end
 
