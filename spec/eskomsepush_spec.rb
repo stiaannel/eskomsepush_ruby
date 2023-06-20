@@ -6,6 +6,10 @@ RSpec.describe EskomSePush do
   end
 
   it "initializing it without a token should raise an error" do
-    expect { EskomSePush::API.new(nil) }.to raise_error(EskomSePush::InvalidTokenError)
+    expect { EskomSePush::API.new(nil) }.to raise_error(EskomSePush::SePushError::InvalidTokenError)
   end
+
+  # it "handle response should be able to parse a JSON response" do
+
+  # end
 end

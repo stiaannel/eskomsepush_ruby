@@ -13,7 +13,7 @@ require_relative "eskomsepush/version"
 #   esp.get_quota
 module EskomSePush
   # Includes
-  require "net/http"
+  require "faraday"
   require "uri"
   require "date"
   require "time"
@@ -34,11 +34,18 @@ module EskomSePush
   # A new instance of API
   class API
     def initialize(token, options = {})
-      raise InvalidTokenError, "Invalid token" if token.nil?
+      raise SePushError::InvalidTokenError, "Invalid token" if token.nil?
 
       @token = token
       @options = options
       @quota = {}
+
+      begin
+        @connection = Faraday.new("https://developer.sepush.co.za")
+        @connection.headers["token"] = @token
+      rescue Faraday::ConnectionFailed
+        raise SePushError::UnexpectedError
+      end
     end
 
     # Method to get your remaining API Quota/Allowance
@@ -49,13 +56,9 @@ module EskomSePush
     # == Returns:
     # Response object from handle_response
     #
-    def get_quota
-      url = URI("https://developer.sepush.co.za/business/2.0/api_allowance")
-      request = Net::HTTP::Post.new(url)
-      request["token"] = @token
-
-      response = Net::HTTP.get(url)
-      handle_response(response)
+    def check_allowance
+      response = @connection.get("/business/2.0/api_allowance")
+      puts handle_response(response)
     end
 
     # Method to handle the responses from the API
@@ -69,33 +72,32 @@ module EskomSePush
     #
     def handle_response(response)
       return UnexpectedError, "Something went wrong while parsing your response data" if response.nil?
-      return UnexpectedError, "Something went wrong while parsing your response data" if response.body.nil?
 
-      res = JSON.parse(response.body, symbolize_names: true)
-      if response.code != "200" && !res[:error].nil?
+      if response.status != 200 && !response.body["error"].nil?
         # an error most probably happened
-        error_message = " : #{res[:error]}"
-        case response.code
-        when "400"
-          raise BadRequestError, "Bad Request#{error_message}"
-        when "403"
-          raise AuthenticationError, "Authentication error#{error_message}"
-        when "404"
-          raise NotFoundError, "Not found#{error_message}"
-        when "408"
-          raise RequestTimeoutError, "Request timeout#{error_message}"
-        when "429"
-          raise RateLimitError, "Rate limit exceeded#{error_message}"
+        case response.status
+        when 400
+          raise SePushError::BadRequestError
+        when 403
+          raise SePushError::AuthenticationError
+        when 404
+          raise SePushError::NotFoundError
+        when 408
+          raise SePushError::RequestTimeoutError
+        when 429
+          raise SePushError::RateLimitError
           # when 5xx
-        when "500".."599"
-          raise ServerError, "The SePush API returned a server error #{error_message}"
+        when 500..599
+          raise SePushError::ServerError
         end
-      elsif response.code == "200"
+      elsif response.status == 200
         # success, so parse the data and make it nice and squeaky clean
-        return res
+        puts response.body
       else
-        raise UnexpectedError, "Received an unexpected response code from the API server: #{response.code}"
+        raise SePushError::UnexpectedError
       end
     end
+
+    alias quota check_allowance
   end
 end
