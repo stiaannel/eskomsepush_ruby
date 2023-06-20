@@ -61,6 +61,79 @@ module EskomSePush
       puts handle_response(response)
     end
 
+    # Method to get the current status of the Eskom Loadshedding
+    #
+    # == Parameters:
+    # None
+    def status
+      response = @connection.get("/business/2.0/status")
+      puts handle_response(response)
+    end
+
+    # Search for the areaID of a specific area
+    #
+    # == Parameters:
+    # text::
+    #   The name of the area you want to search for
+    #
+    # == Returns:
+    # Response object from handle_response
+    def area_search(text = nil)
+      raise SePushError::BadRequestError if text.nil?
+
+      response = @connection.get("/business/2.0/area_search?text=#{keyword}")
+      puts handle_response(response)
+    end
+
+    # Get the area information for a specific area
+    #
+    # == Parameters:
+    # area_id::String
+    #   The areaID of the area you want to get information for
+    # test::String
+    #   Whether you would like to use test data or not, valid options
+    #   are current and future
+    def area_information(area_id = nil, _test = nil)
+      raise SePushError::BadRequestError if area_id.nil?
+
+      response = @connection.get("/business/2.0/area?area_id=#{area_id}")
+      puts handle_response(response)
+    end
+
+    # Get a list of all nearby areas
+    #
+    # == Parameters:
+    # lat::String
+    #   The latitude of the area you want to get nearby areas for
+    # long::String
+    #   The longitude of the area you want to get nearby areas for
+    #
+    # == Returns:
+    # Response object from handle_response
+    def areas_nearby(lat = nil, long = nil)
+      raise SePushError::BadRequestError if lat.nil? || long.nil?
+
+      response = @connection.get("/business/2.0/areas_nearby?lat=#{lat}&long=#{long}")
+      puts handle_response(response)
+    end
+
+    # Get a list of all nearby topics
+    #
+    # == Parameters:
+    # lat::String
+    #   The latitude of the area you want to get nearby topics for
+    # long::String
+    #   The longitude of the area you want to get nearby topics for
+    #
+    # == Returns:
+    # Response object from handle_response
+    def topics_nearby(lat = nil, long = nil)
+      raise SePushError::BadRequestError if lat.nil? || long.nil?
+
+      response = @connection.get("/business/2.0/topics_nearby?lat=#{lat}&long=#{long}")
+      puts handle_response(response)
+    end
+
     # Method to handle the responses from the API
     #
     # == Parameters:
