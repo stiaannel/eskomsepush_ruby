@@ -11,3 +11,7 @@
 .rspec_status
 
 eskomsepush_ruby-*.gem
+
+# IDE
+.idea/
+.vscode/
