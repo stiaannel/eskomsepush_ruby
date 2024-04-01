@@ -58,7 +58,7 @@ module EskomSePush
     #
     def check_allowance
       response = @connection.get("/business/2.0/api_allowance")
-      puts handle_response(response)
+      handle_response(response)
     end
 
     # Method to get the current status of the Eskom Loadshedding
@@ -67,7 +67,7 @@ module EskomSePush
     # None
     def status
       response = @connection.get("/business/2.0/status")
-      puts handle_response(response)
+      handle_response(response)
     end
 
     # Search for the areaID of a specific area
@@ -78,11 +78,12 @@ module EskomSePush
     #
     # == Returns:
     # Response object from handle_response
-    def area_search(text = nil)
+    def areas_search(text = nil)
       raise SePushError::BadRequestError if text.nil?
 
-      response = @connection.get("/business/2.0/area_search?text=#{keyword}")
-      puts handle_response(response)
+      response = @connection.get("/business/2.0/areas_search?text=#{text}")
+      puts response
+      handle_response(response)
     end
 
     # Get the area information for a specific area
@@ -96,8 +97,8 @@ module EskomSePush
     def area_information(area_id = nil, _test = nil)
       raise SePushError::BadRequestError if area_id.nil?
 
-      response = @connection.get("/business/2.0/area?area_id=#{area_id}")
-      puts handle_response(response)
+      response = @connection.get("/business/2.0/area?id=#{area_id}&test=current")
+      handle_response(response)
     end
 
     # Get a list of all nearby areas
@@ -114,7 +115,7 @@ module EskomSePush
       raise SePushError::BadRequestError if lat.nil? || long.nil?
 
       response = @connection.get("/business/2.0/areas_nearby?lat=#{lat}&long=#{long}")
-      puts handle_response(response)
+      handle_response(response)
     end
 
     # Get a list of all nearby topics
@@ -131,10 +132,11 @@ module EskomSePush
       raise SePushError::BadRequestError if lat.nil? || long.nil?
 
       response = @connection.get("/business/2.0/topics_nearby?lat=#{lat}&long=#{long}")
-      puts handle_response(response)
+      handle_response(response)
     end
 
-    # Method to handle the responses from the API
+    private
+    # Private Method to handle the responses from the API
     #
     # == Parameters:
     # response::
@@ -165,7 +167,7 @@ module EskomSePush
         end
       elsif response.status == 200
         # success, so parse the data and make it nice and squeaky clean
-        puts response.body
+        return JSON.parse(response.body, object_class: OpenStruct)
       else
         raise SePushError::UnexpectedError
       end
