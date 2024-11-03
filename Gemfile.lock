@@ -1,15 +1,17 @@
 PATH
   remote: .
   specs:
-    eskomsepush_ruby (0.1.3)
+    eskomsepush_ruby (1.0.1)
       faraday (~> 2.7.7)
 
 GEM
   remote: https://rubygems.org/
   specs:
     ast (2.4.2)
+    base64 (0.2.0)
     diff-lcs (1.5.0)
-    faraday (2.7.10)
+    faraday (2.7.12)
+      base64
       faraday-net_http (>= 2.0, < 3.1)
       ruby2_keywords (>= 0.0.4)
     faraday-net_http (3.0.2)
