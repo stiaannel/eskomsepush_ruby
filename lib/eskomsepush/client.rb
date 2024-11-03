@@ -20,6 +20,12 @@ require_relative "exception"
 # == Returns:
 # A new instance of API
 module EskomSePush
+  # Main class for the EskomSePush API
+  # This class is used to interact with the EskomSePush API
+  # and provides methods to get the current status of the
+  # Eskom Loadshedding, get information about areas and
+  # topics, and get the remaining API Quota/Allowance
+  # for the day.
   class Client
     def initialize(token, options = {})
       raise EskomSePushError::InvalidTokenError, "Invalid token" if token.nil?
