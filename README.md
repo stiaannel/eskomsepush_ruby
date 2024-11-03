@@ -1,5 +1,8 @@
 # eskomsepush_ruby API Wrapper
 
+![Tests](https://github.com/stiaannel/eskomsepush_ruby/actions/workflows/ci-cd.yml/badge.svg)
+
+
 A Ruby wrapper for the EskomSePush API V2. This gem provides a simple and intuitive interface to interact with the EskomSePush services.
 
 ## Important Notice
