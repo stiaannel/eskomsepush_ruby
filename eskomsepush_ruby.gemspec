@@ -17,7 +17,7 @@ Gem::Specification.new do |spec|
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = "https://github.com/stiaannel/eskomsepush_ruby"
   spec.metadata["changelog_uri"] = "https://github.com/stiaannel/eskomsepush_ruby/blob/master/CHANGELOG.md"
-
+  spec.metadata["documentation_uri"] = "https://stiaannel.co.za/eskomsepush_ruby/"
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
   spec.files = Dir.chdir(__dir__) do

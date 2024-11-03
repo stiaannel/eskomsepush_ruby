@@ -10,6 +10,10 @@ require_relative "eskomsepush/client"
 #
 # == Usage:
 #   require 'eskomsepush_ruby'
-#   esp = EskomSePush::Client.new("{{token}}")
+#   esp = EskomSePush.client("{{token}}")
 #   esp.get_quota
-module EskomSePush; end
+module EskomSePush
+  def self.client(api_key)
+    Client.new(api_key)
+  end
+end

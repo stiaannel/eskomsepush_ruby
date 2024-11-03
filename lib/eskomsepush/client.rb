@@ -85,7 +85,8 @@ module EskomSePush
     def area_information(area_id = nil, _test = nil)
       raise EskomSePushError::BadRequestError if area_id.nil?
 
-      response = @connection.get("/business/2.0/area?id=#{area_id}&test=current")
+      url = "/business/2.0/area?id=#{area_id}" + (_test.nil? ? "" : "&test=#{_test}")
+      response = @connection.get(url)
       handle_response(response)
     end
 

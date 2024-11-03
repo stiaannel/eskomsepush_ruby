@@ -2,5 +2,5 @@
 
 module EskomSePush
   # Static Version of EskomSePush Rubygem
-  VERSION = "0.1.2"
+  VERSION = "1.0.0"
 end
